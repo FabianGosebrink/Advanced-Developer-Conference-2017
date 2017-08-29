@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace DotnetcliWebApi
 {
@@ -27,6 +28,11 @@ namespace DotnetcliWebApi
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                             .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
                 })
+                 .ConfigureLogging((hostingContext, logging) =>
+                    {
+                        logging.AddConsole();
+                        logging.AddDebug();
+                    })
                 .Build();
     }
 }

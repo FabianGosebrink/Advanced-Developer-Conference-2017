@@ -47,9 +47,19 @@ namespace DotnetcliWebApi
 
             services.AddSingleton<IFoodRepository, FoodRepository>();
 
-            services.AddSwaggerGen(config =>
+            services.AddSwaggerGen(options =>
             {
-                config.SwaggerDoc("v1", new Info { Title = "My first WebAPI", Version = "v1" });
+                options.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "API v1"
+                });
+
+                options.SwaggerDoc("v2", new Info
+                {
+                    Version = "v2",
+                    Title = "API v2"
+                });
             });
 
             services.AddApiVersioning(config =>
@@ -61,7 +71,8 @@ namespace DotnetcliWebApi
              });
 
             services.AddMvcCore()
-                .AddJsonFormatters(options => options.ContractResolver = new CamelCasePropertyNamesContractResolver())
+                .AddJsonFormatters(options =>
+                    options.ContractResolver = new CamelCasePropertyNamesContractResolver())
                 .AddApiExplorer();
         }
 
@@ -96,10 +107,11 @@ namespace DotnetcliWebApi
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(config =>
-            {
-                config.SwaggerEndpoint("/swagger/v1/swagger.json", "My first WebAPI");
-            });
+            app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+                    options.SwaggerEndpoint("/swagger/v2/swagger.json", "API v2");
+                });
 
             app.UseCors("AllowAllOrigins");
             AutoMapper.Mapper.Initialize(mapper =>
