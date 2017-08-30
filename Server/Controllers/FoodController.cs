@@ -10,21 +10,10 @@ using DotnetcliWebApi.Entities;
 
 namespace DotnetcliWebApi.Controllers
 {
-    [ApiVersion("2.0")]
-    [ApiExplorerSettings(GroupName = "v2")]
-    [Route("api/v{version:apiVersion}/food")]
-    public class Food2Controller : Controller
-    {
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok("2.0");
-        }
-    }
-
-    [ApiVersion("1.0")]
-    [ApiExplorerSettings(GroupName = "v1")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    // [ApiVersion("1.0")]
+    // [ApiExplorerSettings(GroupName = "v1")]
+    // [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/[controller]")]
     public class FoodController : Controller
     {
         private readonly IFoodRepository _foodRepository;
@@ -176,4 +165,16 @@ namespace DotnetcliWebApi.Controllers
             return Ok(Mapper.Map<FoodItemDto>(existingFoodItem));
         }
     }
+
+    // [ApiVersion("2.0")]
+    // [ApiExplorerSettings(GroupName = "v2")]
+    // [Route("api/v{version:apiVersion}/food")]
+    // public class Food2Controller : Controller
+    // {
+    //     [HttpGet]
+    //     public IActionResult Get()
+    //     {
+    //         return Ok("2.0");
+    //     }
+    // }
 }

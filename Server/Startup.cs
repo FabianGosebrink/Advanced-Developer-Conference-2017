@@ -70,10 +70,7 @@ namespace DotnetcliWebApi
                  config.ApiVersionReader = new HeaderApiVersionReader("api-version");
              });
 
-            services.AddMvcCore()
-                .AddJsonFormatters(options =>
-                    options.ContractResolver = new CamelCasePropertyNamesContractResolver())
-                .AddApiExplorer();
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
