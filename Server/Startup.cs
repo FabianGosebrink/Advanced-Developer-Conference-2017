@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,21 +49,23 @@ namespace DotnetcliWebApi
 
             services.AddSingleton<IFoodRepository, FoodRepository>();
 
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new Info
+            services.AddSwaggerGen(
+                options =>
                 {
-                    Version = "v1",
-                    Title = "API v1"
-                });
+                    var provider = services.BuildServiceProvider()
+                                        .GetRequiredService<IApiVersionDescriptionProvider>();
 
-                options.SwaggerDoc("v2", new Info
-                {
-                    Version = "v2",
-                    Title = "API v2"
+                    foreach (var description in provider.ApiVersionDescriptions)
+                    {
+                        options.SwaggerDoc(
+                            description.GroupName,
+                            new Info()
+                            {
+                                Title = $"Sample API {description.ApiVersion}",
+                                Version = description.ApiVersion.ToString()
+                            });
+                    }
                 });
-                
-            });
 
             services.AddApiVersioning(config =>
              {
@@ -72,11 +75,13 @@ namespace DotnetcliWebApi
                  config.ApiVersionReader = new HeaderApiVersionReader("api-version");
              });
 
+            services.AddMvcCore().AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
+            ILoggerFactory loggerFactory, IApiVersionDescriptionProvider provider)
         {
             loggerFactory.AddConsole();
 
@@ -106,11 +111,17 @@ namespace DotnetcliWebApi
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(options =>
-                {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
-                    options.SwaggerEndpoint("/swagger/v2/swagger.json", "API v2");
-                });
+            app.UseSwaggerUI(
+                    options =>
+                    {
+                        foreach (var description in provider.ApiVersionDescriptions)
+                        {
+                            options.SwaggerEndpoint(
+                                $"/swagger/{description.GroupName}/swagger.json",
+                                description.GroupName.ToUpperInvariant());
+                        }
+                    });
+
 
             app.UseCors("AllowAllOrigins");
             AutoMapper.Mapper.Initialize(mapper =>
