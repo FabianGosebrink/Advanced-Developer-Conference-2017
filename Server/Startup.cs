@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace DotnetcliWebApi
 {
@@ -60,6 +61,7 @@ namespace DotnetcliWebApi
                     Version = "v2",
                     Title = "API v2"
                 });
+                
             });
 
             services.AddApiVersioning(config =>
