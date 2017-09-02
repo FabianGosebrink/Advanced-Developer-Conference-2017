@@ -20,7 +20,6 @@ namespace DotnetcliWebApi
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
                 .ConfigureAppConfiguration((context, config) =>
                 {
                     var env = context.HostingEnvironment;
@@ -30,9 +29,11 @@ namespace DotnetcliWebApi
                 })
                  .ConfigureLogging((hostingContext, logging) =>
                     {
+                        logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                         logging.AddConsole();
                         logging.AddDebug();
                     })
+                .UseStartup<Startup>()
                 .Build();
     }
 }
