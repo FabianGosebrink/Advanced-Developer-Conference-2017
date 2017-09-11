@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DotnetcliWebApi.Entities;
+using DotnetcliWebApi.Models;
 
 namespace DotnetcliWebApi.Repositories
 {
@@ -9,7 +11,7 @@ namespace DotnetcliWebApi.Repositories
         void Add(FoodItem item);
         void Delete(int id);
         FoodItem Update(int id, FoodItem item);
-        ICollection<FoodItem> GetAll();
+        IQueryable<FoodItem> GetAll(QueryParameters queryParameters);
         int Count();
 
         bool Save();

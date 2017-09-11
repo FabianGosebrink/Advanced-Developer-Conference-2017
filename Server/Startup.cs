@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,6 +50,14 @@ namespace DotnetcliWebApi
             });
 
             services.AddSingleton<IFoodRepository, FoodRepository>();
+            services.AddRouting(options => options.LowercaseUrls = true);
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IUrlHelper>(implementationFactory =>
+            {
+                var actionContext = implementationFactory.GetService<IActionContextAccessor>()
+                .ActionContext;
+                return new UrlHelper(actionContext);
+            });
 
             services.AddSwaggerGen(
                 options =>
@@ -76,7 +86,12 @@ namespace DotnetcliWebApi
              });
 
             services.AddMvcCore().AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver =
+                new CamelCasePropertyNamesContractResolver();
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -122,6 +137,8 @@ namespace DotnetcliWebApi
                         }
                     });
 
+            var foodRepository = app.ApplicationServices.GetRequiredService<IFoodRepository>();
+            AddTestData(foodRepository);
 
             app.UseCors("AllowAllOrigins");
             AutoMapper.Mapper.Initialize(mapper =>
@@ -131,6 +148,18 @@ namespace DotnetcliWebApi
                           mapper.CreateMap<FoodItem, FoodCreateDto>().ReverseMap();
                       });
             app.UseMvc();
+        }
+
+        private static void AddTestData(IFoodRepository repository)
+        {
+            for (int i = 0; i < 200; i++)
+            {
+                FoodItem foodItem = new FoodItem();
+                foodItem.Created = DateTime.Now;
+                foodItem.Calories = 999;
+                foodItem.Name = Guid.NewGuid().ToString();
+                repository.Add(foodItem);
+            }
         }
     }
 }
