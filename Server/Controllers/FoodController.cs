@@ -31,7 +31,7 @@ namespace DotnetcliWebApi.Controllers
         {
             List<FoodItem> foodItems = _foodRepository.GetAll(queryParameters).ToList();
 
-            var allItemCount = foodItems.Count();
+            var allItemCount = _foodRepository.Count();
 
             var paginationMetadata = new
             {
@@ -200,19 +200,17 @@ namespace DotnetcliWebApi.Controllers
                  orderby = queryParameters.OrderBy
              }), "self", "GET"));
 
-            var defaultParameters = new QueryParameters();
-
             links.Add(new LinkDto(_urlHelper.Link(nameof(GetAllFoods), new
             {
-                pagecount = defaultParameters.PageCount,
-                page = defaultParameters.Page,
+                pagecount = queryParameters.PageCount,
+                page = 1,
                 orderby = queryParameters.OrderBy
             }), "first", "GET"));
 
             links.Add(new LinkDto(_urlHelper.Link(nameof(GetAllFoods), new
             {
                 pagecount = queryParameters.PageCount,
-                page = (totalCount / queryParameters.PageCount) + 1,
+                page = queryParameters.GetTotalPages(totalCount),
                 orderby = queryParameters.OrderBy
             }), "last", "GET"));
 
@@ -231,7 +229,7 @@ namespace DotnetcliWebApi.Controllers
                 links.Add(new LinkDto(_urlHelper.Link(nameof(GetAllFoods), new
                 {
                     pagecount = queryParameters.PageCount,
-                    page = queryParameters.Page + 1,
+                    page = queryParameters.Page - 1,
                     orderby = queryParameters.OrderBy
                 }), "previous", "GET"));
             }

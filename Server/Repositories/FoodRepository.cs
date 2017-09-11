@@ -5,6 +5,7 @@ using System.Linq;
 using DotnetcliWebApi.Entities;
 using DotnetcliWebApi.Models;
 using System.Linq.Dynamic.Core;
+using DotnetcliWebApi.Helpers;
 
 namespace DotnetcliWebApi.Repositories
 {
@@ -46,9 +47,9 @@ namespace DotnetcliWebApi.Repositories
         public IQueryable<FoodItem> GetAll(QueryParameters queryParameters)
         {
             IQueryable<FoodItem> _allItems = _storage.Values.AsQueryable().OrderBy(queryParameters.OrderBy,
-               queryParameters.Descending);
+               queryParameters.IsDescending());
 
-            if (queryParameters.HasQuery)
+            if (queryParameters.HasQuery())
             {
                 _allItems = _allItems
                     .Where(x => x.Calories.ToString().Contains(queryParameters.Query.ToLowerInvariant())

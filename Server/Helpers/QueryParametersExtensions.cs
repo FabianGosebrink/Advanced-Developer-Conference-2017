@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using DotnetcliWebApi.Models;
 
 namespace DotnetcliWebApi.Helpers
@@ -12,12 +13,26 @@ namespace DotnetcliWebApi.Helpers
 
         public static bool HasNext(this QueryParameters queryParameters, int totalCount)
         {
-            return (queryParameters.Page < (int)Math.Ceiling(totalCount / (double)queryParameters.PageCount));
+            return (queryParameters.Page < (int)GetTotalPages(queryParameters, totalCount));
         }
 
         public static double GetTotalPages(this QueryParameters queryParameters, int totalCount)
         {
             return Math.Ceiling(totalCount / (double)queryParameters.PageCount);
+        }
+
+        public static bool HasQuery(this QueryParameters queryParameters)
+        {
+            return !String.IsNullOrEmpty(queryParameters.Query);
+        }
+
+        public static bool IsDescending(this QueryParameters queryParameters)
+        {
+            if (!String.IsNullOrEmpty(queryParameters.OrderBy))
+            {
+                return queryParameters.OrderBy.Split(' ').Last().ToLowerInvariant().StartsWith("desc");
+            }
+            return false;
         }
     }
 }
