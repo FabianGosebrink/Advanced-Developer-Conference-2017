@@ -152,7 +152,7 @@ namespace DotnetcliWebApi
 
         private static void AddTestData(IFoodRepository repository)
         {
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 15; i++)
             {
                 FoodItem foodItem = new FoodItem();
                 foodItem.Created = DateTime.Now;
