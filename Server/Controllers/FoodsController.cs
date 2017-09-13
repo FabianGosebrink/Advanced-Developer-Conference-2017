@@ -16,12 +16,12 @@ namespace DotnetcliWebApi.Controllers
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     // [Route("api/[controller]")]
-    public class FoodController : Controller
+    public class FoodsController : Controller
     {
         private readonly IFoodRepository _foodRepository;
         private readonly IUrlHelper _urlHelper;
 
-        public FoodController(IUrlHelper urlHelper, IFoodRepository foodRepository)
+        public FoodsController(IUrlHelper urlHelper, IFoodRepository foodRepository)
         {
             _foodRepository = foodRepository;
             _urlHelper = urlHelper;
@@ -298,8 +298,8 @@ namespace DotnetcliWebApi.Controllers
     }
 
     [ApiVersion("2.0")]
-    [Route("api/v{version:apiVersion}/food")]
-    public class Food2Controller : Controller
+    [Route("api/v{version:apiVersion}/foods")]
+    public class Foods2Controller : Controller
     {
         [HttpGet]
         public IActionResult Get()

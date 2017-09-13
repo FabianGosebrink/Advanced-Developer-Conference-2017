@@ -16,7 +16,7 @@ export class FoodDataService {
     public actionUrl: string;
 
     constructor(private http: HttpWrapperService, private configuration: Configuration) {
-        this.actionUrl = configuration.server + configuration.apiUrl + 'food/';
+        this.actionUrl = configuration.server + configuration.apiUrl + 'foods/';
     }
 
     getAllFood = (): Observable<FoodItem[]> => {
