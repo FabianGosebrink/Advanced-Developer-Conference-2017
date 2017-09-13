@@ -61,6 +61,17 @@ namespace DotnetcliWebApi.Repositories
                 .Take(queryParameters.PageCount);
         }
 
+        public ICollection<FoodItem> GetRandomMeal()
+        {
+            List<FoodItem> toReturn = new List<FoodItem>();
+
+            toReturn.Add(GetRandomItem("Starter"));
+            toReturn.Add(GetRandomItem("Main"));
+            toReturn.Add(GetRandomItem("Dessert"));
+
+            return toReturn;
+        }
+
         public int Count()
         {
             return _storage.Count;
@@ -70,6 +81,13 @@ namespace DotnetcliWebApi.Repositories
         {
             // To keep interface consistent with Controllers, Tests & EF Interfaces
             return true;
+        }
+        private FoodItem GetRandomItem(string type)
+        {
+            return _storage.Values
+                .Where(x => x.Type == type)
+                .OrderBy(o => Guid.NewGuid())
+                .FirstOrDefault();
         }
     }
 }

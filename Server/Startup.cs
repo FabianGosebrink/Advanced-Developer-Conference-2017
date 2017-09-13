@@ -158,6 +158,7 @@ namespace DotnetcliWebApi
                 foodItem.Created = DateTime.Now;
                 foodItem.Calories = 999;
                 foodItem.Name = Guid.NewGuid().ToString();
+                foodItem.Type = "Starter";
                 repository.Add(foodItem);
             }
         }

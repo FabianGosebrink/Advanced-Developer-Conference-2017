@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using DotnetcliWebApi.Entities;
 using DotnetcliWebApi.Models;
 using DotnetcliWebApi.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DotnetcliWebApi.Controllers
 {
@@ -93,7 +94,7 @@ namespace DotnetcliWebApi.Controllers
 
             FoodItem newFoodItem = _foodRepository.GetSingle(toAdd.Id);
 
-            return CreatedAtRoute("GetSingleFood", new { id = newFoodItem.Id },
+            return CreatedAtRoute(nameof(GetSingleFood), new { id = newFoodItem.Id },
                 Mapper.Map<FoodItemDto>(newFoodItem));
         }
 
@@ -185,6 +186,26 @@ namespace DotnetcliWebApi.Controllers
             }
 
             return Ok(Mapper.Map<FoodItemDto>(existingFoodItem));
+        }
+
+        [HttpGet("GetRandomMeal", Name = nameof(GetRandomMeal))]
+        public IActionResult GetRandomMeal()
+        {
+            ICollection<FoodItem> foodItems = _foodRepository.GetRandomMeal();
+
+            IEnumerable<FoodItemDto> dtos = foodItems
+                .Select(x => Mapper.Map<FoodItemDto>(x));
+
+            var links = new List<LinkDto>();
+
+            // self 
+            links.Add(new LinkDto(_urlHelper.Link(nameof(GetRandomMeal), null), "self", "GET"));
+
+            return Ok(new
+            {
+                value = dtos,
+                links = links
+            });
         }
 
         private List<LinkDto> CreateLinksForCollection(QueryParameters queryParameters, int totalCount)

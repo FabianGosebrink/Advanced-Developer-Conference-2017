@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="jumbotron starter-template">
+    <h2>Your meal for today</h2>
+
+    <randomMeal [fooditem]="(homeState$|async).randomMeal[0]"></randomMeal>
+    <randomMeal [fooditem]="(homeState$|async).randomMeal[1]"></randomMeal>
+    <randomMeal [fooditem]="(homeState$|async).randomMeal[2]"></randomMeal>
+    <br/>
+    <button type="button" class="btn btn-primary" (click)="updateFood()">Get new Meal</button>
+  </div>
+
+
+
+  <div class="container">
+    <div class="row">
+      <div class="thumbnails">
+        <div class="col-md-4" *ngFor="let foodItem of (homeState$|async).foodItems">
+          <sneakpeek [foodItem]="foodItem"></sneakpeek>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site footer -->
+  <emeal-footer></emeal-footer>
+
+</div>
+<!-- /.container -->
