@@ -18,9 +18,12 @@ export function foodItemsReducer(state = initialState, action: Action): FoodStat
 
         case FoodActions.ADD_FOOD_SUCCESS:
             const addFoodAction = <FoodActions.AddFoodSuccessAction>action;
+            const lowerCaseObject = <FoodItem>keysToLowerCase(addFoodAction.foodItem);
+            const itemAlreadyExists = state.foodItems.find(item => item.id === lowerCaseObject.id);
+
             return {
                 ...state,
-                foodItems: state.foodItems.concat(addFoodAction.foodItem)
+                foodItems: itemAlreadyExists ? state.foodItems : state.foodItems.concat(addFoodAction.foodItem)
             };
 
         case FoodActions.DELETE_FOOD_SUCCESS:
@@ -69,4 +72,16 @@ export function selectedItemReducer(state = initialState, action: any): FoodStat
             return state;
 
     }
+}
+
+function keysToLowerCase(obj) {
+    Object.keys(obj).forEach(function (key) {
+        let k = key.toLowerCase();
+
+        if (k !== key) {
+            obj[k] = obj[key];
+            delete obj[key];
+        }
+    });
+    return (obj);
 }

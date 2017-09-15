@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotnetcliWebApi.Dtos;
 using DotnetcliWebApi.Entities;
+using DotnetcliWebApi.Hubs;
 using DotnetcliWebApi.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -84,12 +85,11 @@ namespace DotnetcliWebApi
                  config.DefaultApiVersion = new ApiVersion(1, 0);
                  config.ApiVersionReader = new HeaderApiVersionReader("api-version");
              });
-
+            services.AddSignalR();
             services.AddMvcCore().AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
             services.AddMvc().AddJsonOptions(options =>
             {
-                options.SerializerSettings.ContractResolver =
-                new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
 
         }
@@ -140,6 +140,11 @@ namespace DotnetcliWebApi
             var foodRepository = app.ApplicationServices.GetRequiredService<IFoodRepository>();
             AddTestData(foodRepository);
 
+            app.UseSignalR(routes =>
+                       {
+                           routes.MapHub<FoodHub>("foodhub");
+                       });
+
             app.UseCors("AllowAllOrigins");
             AutoMapper.Mapper.Initialize(mapper =>
                       {
@@ -152,7 +157,7 @@ namespace DotnetcliWebApi
 
         private static void AddTestData(IFoodRepository repository)
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 5; i++)
             {
                 FoodItem foodItem = new FoodItem();
                 foodItem.Created = DateTime.Now;

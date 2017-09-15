@@ -26,7 +26,9 @@
         "../node_modules/font-awesome/css/font-awesome.css"
       ],
       "scripts": [
-        "../node_modules/bootstrap/dist/js/bootstrap.js"
+        "../node_modules/bootstrap/dist/js/bootstrap.js",
+        "../node_modules/@aspnet/signalr-client/dist/browser/signalr-clientES5-1.0.0-alpha1-final.min.js",
+        "../node_modules/@aspnet/signalr-client/dist/browser/signalr-msgpackprotocolES5-1.0.0-alpha1-final.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

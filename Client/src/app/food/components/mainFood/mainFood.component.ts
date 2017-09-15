@@ -1,3 +1,4 @@
+import { SignalRService } from '../../../core/data-services/signalr.service';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -15,9 +16,13 @@ export class MainFoodComponent implements OnInit {
     selectedItemState$: Observable<FoodState>;
     foodState$: Observable<FoodState>;
 
-    constructor(private store: Store<any>) {
+    constructor(private store: Store<any>, private signalRService: SignalRService) {
         this.foodState$ = this.store.select<FoodState>(state => state.food.foodItems);
         this.selectedItemState$ = this.store.select<FoodState>(state => state.food.selectedItem);
+
+        signalRService.foodAdded.subscribe((foodItem: FoodItem) => {
+            this.store.dispatch(new FoodActions.AddFoodSuccessAction(foodItem));
+        });
     }
 
     ngOnInit() {

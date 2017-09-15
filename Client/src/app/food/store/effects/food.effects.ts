@@ -15,7 +15,8 @@ import * as FoodActions from '../actions/food.actions';
 @Injectable()
 export class FoodEffects {
 
-    @Effect() addFood$: Observable<Action> = this.actions$.ofType(FoodActions.ADD_FOOD)
+    @Effect() addFood$: Observable<Action> = this.actions$
+        .ofType(FoodActions.ADD_FOOD)
         .switchMap((action: FoodActions.AddFoodAction) =>
             this.foodDataService.addFood(action.foodItem)
                 .map((data: FoodItem) => {

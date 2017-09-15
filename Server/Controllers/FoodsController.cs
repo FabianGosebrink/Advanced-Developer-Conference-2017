@@ -10,6 +10,8 @@ using DotnetcliWebApi.Entities;
 using DotnetcliWebApi.Models;
 using DotnetcliWebApi.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
+using DotnetcliWebApi.Hubs;
 
 namespace DotnetcliWebApi.Controllers
 {
@@ -20,11 +22,13 @@ namespace DotnetcliWebApi.Controllers
     {
         private readonly IFoodRepository _foodRepository;
         private readonly IUrlHelper _urlHelper;
+        private readonly IHubContext<FoodHub> _hubContext;
 
-        public FoodsController(IUrlHelper urlHelper, IFoodRepository foodRepository)
+        public FoodsController(IHubContext<FoodHub> hubContext, IUrlHelper urlHelper, IFoodRepository foodRepository)
         {
             _foodRepository = foodRepository;
             _urlHelper = urlHelper;
+            _hubContext = hubContext;
         }
 
         [HttpGet(Name = nameof(GetAllFoods))]
@@ -93,7 +97,9 @@ namespace DotnetcliWebApi.Controllers
             }
 
             FoodItem newFoodItem = _foodRepository.GetSingle(toAdd.Id);
-
+            
+            _hubContext.Clients.All.InvokeAsync("foodadded", Mapper.Map<FoodItemDto>(newFoodItem));
+            
             return CreatedAtRoute(nameof(GetSingleFood), new { id = newFoodItem.Id },
                 Mapper.Map<FoodItemDto>(newFoodItem));
         }

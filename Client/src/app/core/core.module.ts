@@ -1,3 +1,4 @@
+import { SignalRService } from './data-services/signalr.service';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
@@ -48,6 +49,7 @@ export class CoreModule {
                 CurrentUserService,
                 PlatformInformationProvider,
                 CpuValueService,
+                SignalRService,
                 {
                     provide: AbstractNotificationService,
                     useFactory: notificationFactory,

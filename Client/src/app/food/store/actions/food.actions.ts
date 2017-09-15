@@ -2,6 +2,7 @@ import { FoodItem } from '../../../shared/models/foodItem.model';
 import { Action } from '@ngrx/store';
 
 export const ADD_FOOD = 'ADD_FOOD'
+export const ADD_FOOD_SIGNALR = 'ADD_FOOD_SIGNALR'
 export const ADD_FOOD_SUCCESS = 'ADD_FOOD_SUCCESS'
 export const DELETE_FOOD = 'DELETE_FOOD'
 export const DELETE_FOOD_SUCCESS = 'DELETE_FOOD_SUCCESS'
@@ -15,6 +16,11 @@ export const SELECT_FOOD_SUCCESS = 'SELECT_FOOD_SUCCESS'
 
 export class AddFoodAction implements Action {
     readonly type = ADD_FOOD;
+    constructor(public foodItem: FoodItem) {}
+}
+
+export class AddFoodSignalRAction implements Action {
+    readonly type = ADD_FOOD_SIGNALR;
     constructor(public foodItem: FoodItem) {}
 }
 
