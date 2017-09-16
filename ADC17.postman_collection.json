@@ -1,0 +1,140 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ADC17",
+		"_postman_id": "bd41d6f7-174a-65ee-64c5-2fad92950a96",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01_GetAll_localhost",
+			"request": {
+				"url": "localhost:5000/api/v1/foods",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "01_GetAll_withPaging",
+			"request": {
+				"url": {
+					"raw": "http://localhost:5000/api/v1/foods?pagecount=2&page=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"foods"
+					],
+					"query": [
+						{
+							"key": "pagecount",
+							"value": "2",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "02_Post_localhost",
+			"request": {
+				"url": "localhost:5000/api/v1/foods",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Lasagne\",\n    \"type\": \"Main\",\n    \"calories\": 3000,\n    \"created\": \"2017-09-16T17:50:08.1510899+02:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "03_Put_localhost",
+			"request": {
+				"url": "localhost:5000/api/v1/foods/6",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Lasagne2\",\n    \"type\": \"Main\",\n    \"calories\": 3000,\n    \"created\": \"2017-09-16T17:50:08.1510899+02:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "04_Delete_localhost",
+			"request": {
+				"url": "localhost:5000/api/v1/foods/6",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Lasagne2\",\n    \"type\": \"Main\",\n    \"calories\": 3000,\n    \"created\": \"2017-09-16T17:50:08.1510899+02:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "05_Patch_localhost",
+			"request": {
+				"url": "localhost:5000/api/v1/foods/5",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  { \"op\": \"replace\", \"path\": \"/name\", \"value\": \"mynewname\" }\r\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
