@@ -51,15 +51,6 @@ export function foodItemsReducer(state = initialState, action: Action): FoodStat
                 selectedItem: new FoodItem()
             };
 
-        default:
-            return state;
-
-    }
-}
-
-export function selectedItemReducer(state = initialState, action: any): FoodState {
-    switch (action.type) {
-
         case FoodActions.SELECT_FOOD_SUCCESS:
             const selectFoodAction = <FoodActions.SelectFoodSuccessAction>action;
             return {

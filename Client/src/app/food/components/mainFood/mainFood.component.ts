@@ -13,12 +13,10 @@ import { FoodItem } from './../../../shared/models/foodItem.model';
 })
 
 export class MainFoodComponent implements OnInit {
-    selectedItemState$: Observable<FoodState>;
     foodState$: Observable<FoodState>;
 
     constructor(private store: Store<any>, private signalRService: SignalRService) {
         this.foodState$ = this.store.select<FoodState>(state => state.food.foodItems);
-        this.selectedItemState$ = this.store.select<FoodState>(state => state.food.selectedItem);
 
         signalRService.foodAdded.subscribe((foodItem: FoodItem) => {
             this.store.dispatch(new FoodActions.AddFoodSuccessAction(foodItem));

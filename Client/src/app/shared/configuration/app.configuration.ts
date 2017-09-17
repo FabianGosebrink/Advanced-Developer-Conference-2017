@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class Configuration {
-    server = 'http://52.138.147.79/'; // 'http://localhost:5000/';
+    server = 'http://localhost:5000/'//'http://52.138.147.79/'; // 'http://localhost:5000/';
     apiUrl = 'api/v1/';
     title = 'eMeal';
 
