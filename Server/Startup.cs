@@ -85,7 +85,11 @@ namespace DotnetcliWebApi
                  config.DefaultApiVersion = new ApiVersion(1, 0);
                  config.ApiVersionReader = new HeaderApiVersionReader("api-version");
              });
-            services.AddSignalR();
+             
+            services.AddSignalR(options => {
+                options.JsonSerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
+
             services.AddMvcCore().AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
             services.AddMvc().AddJsonOptions(options =>
             {
